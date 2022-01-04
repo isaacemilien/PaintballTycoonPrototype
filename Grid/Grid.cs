@@ -42,5 +42,20 @@ public class Grid
     {
         return new Vector3(x, y) * boxSize;
     }
+
+    // RETURN COORDINATES OF TILES THAT SURROUND GIVEN TILE
+    public int[][] GetNeighboringTiles(int x, int y)
+    {
+        int[][] packagedCoordinates = new int[][]
+        {
+            new int[] { x, y + 1 },
+            new int[] { x, y - 1 },
+            new int[] { x + 1, y },
+            new int[] { x - 1, y }
+        };
+
+        Debug.Log("Above coordinate is: " + packagedCoordinates[0][0] + ", " + packagedCoordinates[0][1]);
+        return packagedCoordinates;
+    }
     #endregion
 }
