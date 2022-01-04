@@ -48,6 +48,7 @@ public class Grid
     {
         int[][] packagedCoordinates = new int[][]
         {
+            // VECTOR 2, GO CLOCKWISE
             new int[] { x, y + 1 },
             new int[] { x, y - 1 },
             new int[] { x + 1, y },
@@ -56,6 +57,15 @@ public class Grid
 
         Debug.Log("Above coordinate is: " + packagedCoordinates[0][0] + ", " + packagedCoordinates[0][1]);
         return packagedCoordinates;
+    }
+
+
+    public IEnumerable<Vector2Int> GetNeighbors(Vector2Int coords)
+    {
+        yield return coords + new Vector2Int(0, -1);
+        yield return coords + new Vector2Int(+1, 0);
+        yield return coords + new Vector2Int(0, +1);
+        yield return coords + new Vector2Int(-1, 0);
     }
     #endregion
 }
