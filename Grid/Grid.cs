@@ -67,5 +67,17 @@ public class Grid
         yield return coords + new Vector2Int(0, +1);
         yield return coords + new Vector2Int(-1, 0);
     }
+
+    public bool IsOutOfBounds(Vector2Int tilePosition)
+    {
+        if (tilePosition.x < 0 || tilePosition.y < 0)
+            return true;
+
+        else if (tilePosition.x > width || tilePosition.y > height)
+            return true;
+        
+        else
+            return false;
+    }
     #endregion
 }

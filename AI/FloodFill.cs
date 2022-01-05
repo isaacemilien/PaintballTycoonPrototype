@@ -6,65 +6,42 @@ public class FloodFill : MonoBehaviour
 {
     #region FIELDS
     Grid grid;
-    int[] currentTile = {0, 0};
-    int[] endTile = {4, 3};
+    Vector2Int goalTile = new Vector2Int(2, 2);
     #endregion
 
     #region MONOBEHAVIOUR METHODS 
     void Start()
     {   
-        grid = new Grid(10, 10, .5f);
-
-        GetPath(currentTile, endTile);
+        grid = new Grid(4, 4, .5f);
+        GenerateFill(goalTile);
     }
     #endregion
 
     #region METHODS 
-    Queue<int[]> GetPath(int[] start, int[] goal)
+
+    // Breadth first search
+    void GenerateFill(Vector2Int seed)
     {
-        // CONTAINS POSITIONS OF TILES AND THE POSTION THAT CAME BEFORE THEM
-        Dictionary<int[], int[]> nextTileToGoal = new Dictionary<int[], int[]>();
+        Queue<Vector2Int> searchCollection = new Queue<Vector2Int>();
+        List<Vector2Int> viewedCollection = new List<Vector2Int>();
 
-        // QUEUE TILES THAT WILL BE CHECKED
-        Queue<int[]> frontier = new Queue<int[]>();
-
-        // TILES THAT HAVE BEEN VISITED
-        List<int[]> visitedTilePositions = new List<int[]>();
-
-        frontier.Enqueue(goal);
-
-        // ITERATE WHILE QUEUE HAS MEMBERS
-        while (frontier.Count > 0)
+        searchCollection.Enqueue(seed);
+        while (searchCollection.Count > 0)
         {
-            int[] currentPosition = frontier.Dequeue();
+            Vector2Int currentTile = searchCollection.Dequeue();
+            viewedCollection.Add(currentTile);
 
-            // CHECK CURRENT TILES NEIGHBORING TILES
-            foreach (int[] neighbor in grid.GetNeighboringTiles(currentPosition[0], currentPosition[1]))
+            foreach (Vector2Int neighbor in grid.GetNeighbors(currentTile))
             {
-                bool frontierContainsNeighbor = frontier.Contains(neighbor);
-                // CHECK IF CURRENT POSITION HAS BEEN VISITED
-                if (!visitedTilePositions.Contains(neighbor) && !frontierContainsNeighbor)
+                if (!viewedCollection.Contains(neighbor) && !grid.IsOutOfBounds(neighbor))
                 {
-                    frontier.Enqueue(neighbor);
-                    nextTileToGoal[neighbor] = currentPosition;
+                    searchCollection.Enqueue(neighbor);
+                    viewedCollection.Add(neighbor);
                 }
             }
-            visitedTilePositions.Add(currentPosition);
         }
-        //Queue<int[]> path = new Queue<int[]>();
-        //int[] currentTilePosition = start;
-
-        //// ITERATES UNITL CURRENT PATH IS EQUAL TO GOAL
-        //while (currentTilePosition != goal)
-        //{
-        //    currentTilePosition = nextTileToGoal[currentTilePosition];
-        //    path.Enqueue(currentTilePosition);
-        //}
-
-        return null;
     }
 
-    // GENERATE FLOOD FILL
     // GENERATE PATH BASED ON START
     #endregion
 }
